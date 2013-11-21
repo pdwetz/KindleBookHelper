@@ -15,33 +15,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace KindleBookHelper.Core
 {
     public class Stanza
     {
-        public const string StanzaTag = "div";
-        public const string StanzaClass = "stanza";
-        public const string LineTag = "p";
-
         public List<string> Lines { get; set; }
         public Stanza() { Lines = new List<string>(); }
-
-        public void ConvertToHtml(ref StringBuilder sb)
-        {
-            if (Lines.Count == 0)
-            {
-                return;
-            }
-            sb.AppendFormat("<{0} class=\"{1}\">{2}", StanzaTag, StanzaClass, Environment.NewLine);
-            for (int i = 0; i < Lines.Count; i++)
-            {
-                sb.AppendFormat("<{0}>{1}</{0}>{2}", LineTag, Lines[i], Environment.NewLine);
-            }
-            sb.AppendFormat("</{0}>{1}", StanzaTag, Environment.NewLine);
-        }
     }
 }

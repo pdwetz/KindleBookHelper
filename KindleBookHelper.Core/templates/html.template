@@ -1,0 +1,57 @@
+﻿<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>{{Title}}</title>
+	<link rel="stylesheet" type="text/css" href="poetry.css" />
+	<style type="text/css" media="not amzn-mobi">
+		p { margin-left: 2em; text-indent: -2em; }
+	</style>
+	<style type="text/css" media="amzn-mobi">
+		p { text-indent:-40px }
+	</style>
+</head>
+<body>
+<a id="start"></a>
+<div class="info">
+	<h1 class="title">{{Title}}</h1>
+	<h2 class="author">{{Author}}</h2>
+</div>
+<div class="info">
+  <p>Copyright &#169; {{Copyright}} {{Author}}, All rights reserved</p>
+</div>
+<div class="toc">
+<a id="toc"></a>
+<h1>Table of Contents</h1>
+<ul>
+  <li><a href="#book-forward">Forward</a></li>
+	{{#Poems}}
+	<li><a href="#{{TitleUrlSafe}}">{{Title}}</a></li>
+	{{/Poems}}
+</ul>
+</div>
+<a name="book-forward"></a>
+<div class="info">
+  <h1>Forward</h1>
+  <div class="descr">{{Forward}}</div>
+</div>
+{{#Poems}}
+<div class="poem">
+  <a id="{{TitleUrlSafe}}"></a>
+  <h1>{{Title}}</h1>
+  {{#Stanzas}}
+  <div class="stanza">
+    {{#Lines}}
+    <p>{{.}}</p>
+    {{/Lines}}
+  </div>
+  {{/Stanzas}}
+</div>
+{{/Poems}}
+<a name="EndOfBook"></a>
+<div>
+	<h1>About the Author</h1>
+	<div class="descr">{{AuthorDescription}}</div>
+	<div class="descr">Author's web site: <a href="http://{{AuthorWebsite}}">{{AuthorWebsite}}</a></div>
+</div>
+</body>
+</html>

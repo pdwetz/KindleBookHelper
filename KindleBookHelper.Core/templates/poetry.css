@@ -1,0 +1,10 @@
+﻿html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, pre, table, th, td, tr { margin: 0; padding: 0; }
+body { text-align: left; }
+h1 { text-align: left; font-size: 150%; }
+h1.title { font-size: 300%; }
+h2.subtitle { text-align: left; font-size: 150%; margin-top: 25px; font-style:italic; }
+h2.author { text-align: left; font-size: 200%; margin-top: 150px; }
+div.poem, div.toc, div.info { page-break-after: always; }
+div.stanza { margin-top: 13px; }
+div.descr { margin-bottom: 13px; }
+p { line-height: 1; padding: 0; margin: 0; }

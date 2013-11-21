@@ -17,35 +17,101 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using System.Reflection;
+using Newtonsoft.Json;
+using Nustache.Core;
 
 namespace KindleBookHelper.Core
 {
     public class Book
     {
         public const string EndPlaceholder = "[END]";
-        public const int NcxNavPlayOrderStart = 3;
 
-        public KindleBookHelperSettings Settings { get; set; }
+        public string RawFilePath { get; set; }
+        public string Title { get; set; }
+        public Guid Id { get; set; }
+        public string CoverFileName { get; set; }
+        public string Publisher { get; set; }
+        public string Creator { get; set; }
+        public string Author { get; set; }
+        public string AuthorAlphabetical { get; set; }
+        public string AuthorDescription { get; set; }
+        public string AuthorWebsite { get; set; }
+        public string Forward { get; set; }
+
+        [JsonIgnore]
+        public string TitleFileSafe { get { return Title.URLFriendly(); } }
+
+        [JsonIgnore]
+        public int EndNavPlayOrder { get { return 3 + Poems.Count; } }
+        // TODO Pre-work free-form content
+        [JsonIgnore]
         public List<Poem> Poems { get; set; }
+        // TODO Post-work free-form content
+        [JsonIgnore]
         public string OriginalText { get; set; }
 
-        public Book(KindleBookHelperSettings settings)
+        [JsonIgnore]
+        public int Copyright { get { return DateTime.Now.Year; } }
+
+        private readonly Assembly _assembly;
+
+        public Book()
         {
-            Settings = settings;
+            _assembly = Assembly.GetExecutingAssembly();
+        }
+
+        public static Book Initialize(string sJsonFilePath)
+        {
+            var book = JsonConvert.DeserializeObject<Book>(File.ReadAllText(sJsonFilePath));
+            if (book.Id == Guid.Empty)
+            {
+                book.Id = Guid.NewGuid();
+                File.WriteAllText(sJsonFilePath, JsonConvert.SerializeObject(book, Formatting.Indented));
+            }
+            return book;
         }
         
         public void Process()
         {
-            OriginalText = FileUtilities.LoadTextFile(Settings.SourceFilePath);
+            if (string.IsNullOrWhiteSpace(RawFilePath))
+            {
+                throw new ArgumentException("RawFilePath parameter must be set");
+            }
+
+            OriginalText = FileUtilities.LoadTextFile(RawFilePath);
 
             Parse();
 
-            string sHtml = ConvertToHtml();
-            FileUtilities.WriteTextFile(Settings.TargetHtmlFilePath, sHtml);
+            if (Poems.Count == 0)
+            {
+                throw new ApplicationException("No poems found in source");
+            }
 
-            string sNcx = GetNcx();
-            FileUtilities.WriteTextFile(Settings.TargetNcxFilePath, sNcx);
+            var sTargetDirectoryPath = Path.GetDirectoryName(RawFilePath);
+            RenderTemplate(sTargetDirectoryPath, "html");
+            RenderTemplate(sTargetDirectoryPath, "ncx");
+            RenderTemplate(sTargetDirectoryPath, "opf");
+
+            var sCssFilePath = Path.Combine(sTargetDirectoryPath, "poetry.css");
+            if (!File.Exists(sCssFilePath))
+            {
+                var sCss = FileUtilities.LoadTextResource(_assembly, "KindleBookHelper.Core.templates.poetry.css");
+                FileUtilities.WriteTextFile(sCssFilePath, sCss);
+            }
+        }
+
+        private void RenderTemplate(string sTargetDirectoryPath, string sTemplate)
+        {
+            var targetFilePath = Path.Combine(sTargetDirectoryPath, string.Format("{0}.{1}", TitleFileSafe, sTemplate));
+            using (var reader = new StreamReader(_assembly.GetManifestResourceStream("KindleBookHelper.Core.templates." + sTemplate + ".template")))
+            {
+                using (var writer = File.CreateText(targetFilePath))
+                {
+                    Render.Template(reader, this, writer);
+                }
+            }
         }
 
         public void Parse()
@@ -63,40 +129,6 @@ namespace KindleBookHelper.Core
                 Poems.Add(new Poem(sRawPoem));
                 iPos = iEndPos + EndPlaceholder.Length;
             }
-        }
-
-        public string ConvertToHtml()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<div class=\"toc\">");
-            sb.AppendLine("<a id=\"toc\"></a>");
-            sb.AppendLine("<h1>Table of Contents</h1>");
-            sb.AppendLine("<ul>");
-            foreach (Poem p in Poems)
-            {
-                sb.AppendFormat("<li><a href=\"#{0}\">{1}</a></li>{2}", p.Title.URLFriendly(), p.Title, Environment.NewLine);
-            }
-            sb.AppendLine("</ul>");
-            sb.AppendLine("</div>");
-            foreach (Poem p in Poems)
-            {
-                p.ConvertToHtml(ref sb);
-            }
-            return sb.ToString();
-        }
-
-        public string GetNcx()
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < Poems.Count; i++)
-            {
-                sb.AppendFormat("<navPoint id=\"{0}\" playOrder=\"{1}\">{2}", Poems[i].Title.URLFriendly(),
-                    i + NcxNavPlayOrderStart, Environment.NewLine);
-                sb.AppendFormat("<navLabel><text>{0}</text></navLabel>{1}", Poems[i].Title, Environment.NewLine);
-                sb.AppendFormat("<content src=\"{0}#{1}\"/>{2}", Settings.TargetHtmlFileName, Poems[i].Title.URLFriendly(), Environment.NewLine);
-                sb.AppendLine("</navPoint>");
-            }
-            return sb.ToString();
         }
     }
 }

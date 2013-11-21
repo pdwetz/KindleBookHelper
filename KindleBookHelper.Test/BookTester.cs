@@ -24,26 +24,42 @@ using NUnit.Framework;
 using KindleBookHelper.Core;
 using System.IO;
 using System.Reflection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace KindleHelper.Test
 {
     [TestFixture]
     public class BookTester
     {
-        private KindleBookHelperSettings _settings;
+        private string _sourceFilePath;
 
         [SetUp]
         public void Setup()
         {
-            _settings = new KindleBookHelperSettings();
             string sPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            _settings.SourceFilePath = Path.Combine(sPath, "test.txt");
-            _settings.TargetFolderPath = sPath;
+            _sourceFilePath = Path.Combine(sPath, "test.json");
+            Console.WriteLine(_sourceFilePath);
         }
 
         [Test]
         public void process()
         {
+            var directoryPath = Path.GetDirectoryName(_sourceFilePath);
+            var rawFilePath = Path.Combine(directoryPath, "raw.txt");
+            JObject settings = JObject.FromObject(new
+            {
+                RawFilePath = rawFilePath,
+                Title = "Test",
+                Id = Guid.NewGuid(),
+                CoverFileName = "cover.jpg",
+                Publisher = "Test Publisher",
+                Creator = "Test Creator",
+                Author = "Test Author",
+                AuthorAlphabetical = "Author, Test",
+            });
+            FileUtilities.WriteTextFile(_sourceFilePath, settings.ToString());
+
             string sRaw = @"
 A Title
 
@@ -62,11 +78,22 @@ Yet Another line
 
 [END]
 ";
-            FileUtilities.WriteTextFile(_settings.SourceFilePath, sRaw);
-            Book book = new Book(_settings);
+            FileUtilities.WriteTextFile(rawFilePath, sRaw);
+
+            Book book = Book.Initialize(_sourceFilePath);
             book.Process();
-            Assert.IsTrue(File.Exists(_settings.TargetHtmlFilePath));
-            Assert.IsTrue(File.Exists(_settings.TargetNcxFilePath));
+
+            var targetFilePath = Path.Combine(directoryPath, string.Format("{0}.{1}", book.TitleFileSafe, "html"));
+            Console.WriteLine(targetFilePath);
+            Assert.IsTrue(File.Exists(targetFilePath));
+
+            targetFilePath = Path.Combine(directoryPath, string.Format("{0}.{1}", book.TitleFileSafe, "ncx"));
+            Console.WriteLine(targetFilePath);
+            Assert.IsTrue(File.Exists(targetFilePath));
+
+            targetFilePath = Path.Combine(directoryPath, string.Format("{0}.{1}", book.TitleFileSafe, "opf"));
+            Console.WriteLine(targetFilePath);
+            Assert.IsTrue(File.Exists(targetFilePath));
         }
     }
 }

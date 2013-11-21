@@ -18,16 +18,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace KindleBookHelper.Core
 {
     public class Poem
     {
-        public const string PoemTag = "div";
-        public const string PoemClass = "poem";
-
         public string Title { get; set; }
+        public string TitleUrlSafe { get { return Title.URLFriendly(); } }
         public List<Stanza> Stanzas { get; set; }
 
         public Poem(string sRaw)
@@ -59,22 +56,6 @@ namespace KindleBookHelper.Core
                 }
                 Stanzas.Last().Lines.Add(lines[i]);
             }
-        }
-
-        public void ConvertToHtml(ref StringBuilder sb)
-        {
-            if (string.IsNullOrWhiteSpace(Title) || Stanzas.Count == 0)
-            {
-                return;
-            }
-            sb.AppendFormat("<{0} class=\"{1}\">{2}", PoemTag, PoemClass, Environment.NewLine);
-            sb.AppendFormat("<a id=\"{0}\"></a>{1}", Title.URLFriendly(), Environment.NewLine);
-            sb.AppendFormat("<h1>{0}</h1>{1}", Title, Environment.NewLine);
-            for (int i = 0; i < Stanzas.Count; i++)
-            {
-                Stanzas[i].ConvertToHtml(ref sb);
-            }
-            sb.AppendFormat("</{0}>{1}", PoemTag, Environment.NewLine);
         }
     }
 }

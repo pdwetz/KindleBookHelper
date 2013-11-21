@@ -25,15 +25,14 @@ namespace KindleBookHelper
     {
         static void Main(string[] args)
         {
-            KindleBookHelperSettings settings = new KindleBookHelperSettings();
-            settings.SourceFilePath = ConfigurationManager.AppSettings["KindleBookHelper.SourceFilePath"];
-            settings.TargetFolderPath = ConfigurationManager.AppSettings["KindleBookHelper.TargetFolderPath"];
-            settings.TargetName = ConfigurationManager.AppSettings["KindleBookHelper.TargetName"];
-
-            Book book = new Book(settings);
+            Console.WriteLine("KindleBookHelper   Copyright (C) 2013 Peter Wetzel");
+            Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY; for details see license.txt.");
+            string sFilePath = args == null || args.Length == 0 ? ConfigurationManager.AppSettings["KindleBookHelper.SourceFilePath"] : args[0];
+            Console.WriteLine("Processing '" + sFilePath + "'...");
+            Book book = Book.Initialize(sFilePath);
             book.Process();
-
-            Console.WriteLine("Done");
+            Console.WriteLine("Done. Press any key to continue.");
+            Console.ReadLine();
         }
     }
 }

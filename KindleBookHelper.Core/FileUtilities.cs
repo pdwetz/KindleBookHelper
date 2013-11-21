@@ -17,6 +17,7 @@
 */
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace KindleBookHelper.Core
 {
@@ -36,14 +37,30 @@ namespace KindleBookHelper.Core
             return sReturn;
 		}
 
+        public static string LoadTextResource(Assembly assembly, string sResourceName)
+        {
+            string sReturn = "";
+            using (var sr = new StreamReader(assembly.GetManifestResourceStream(sResourceName)))
+            {
+                sReturn = sr.ReadToEnd();
+                sr.DiscardBufferedData();
+                sr.Close();
+            }
+            return sReturn;
+        }
+
+        public static void CreateDirectoryIfMissing(string sDirectoryPath)
+        {
+            if (!Directory.Exists(sDirectoryPath))
+            {
+                Directory.CreateDirectory(sDirectoryPath);
+            }
+        }
+
 		public static void WriteTextFile(string sFilePath, string sData)
 		{
             string sDir = Path.GetDirectoryName(sFilePath);
-			if (!Directory.Exists(sDir)) 
-			{
-				Directory.CreateDirectory(sDir);
-			}
-
+            CreateDirectoryIfMissing(sDir);
             using (StreamWriter sw = File.CreateText(sFilePath))
             {
                 sw.Write(sData);
