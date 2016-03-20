@@ -1,6 +1,6 @@
 ﻿/*
     KindleBookHelper - Converts raw text file to html format that can be consumed by KindleGen.
-    Copyright (C) 2013 Peter Wetzel
+    Copyright (C) 2016 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,16 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using KindleBookHelper.Core;
 using System.IO;
 using System.Reflection;
-using Newtonsoft.Json;
+using KindleBookHelper.Core;
 using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 
 namespace KindleHelper.Test
 {
@@ -82,16 +77,16 @@ Yet Another line
 
             Book book = Book.Initialize(_sourceFilePath);
             book.Process();
-
-            var targetFilePath = Path.Combine(directoryPath, string.Format("{0}.{1}", book.TitleFileSafe, "html"));
+            
+            var targetFilePath = Path.Combine(directoryPath, $"{book.TitleFileSafe}.html");
             Console.WriteLine(targetFilePath);
             Assert.IsTrue(File.Exists(targetFilePath));
 
-            targetFilePath = Path.Combine(directoryPath, string.Format("{0}.{1}", book.TitleFileSafe, "ncx"));
+            targetFilePath = Path.Combine(directoryPath, $"{book.TitleFileSafe}.ncx");
             Console.WriteLine(targetFilePath);
             Assert.IsTrue(File.Exists(targetFilePath));
 
-            targetFilePath = Path.Combine(directoryPath, string.Format("{0}.{1}", book.TitleFileSafe, "opf"));
+            targetFilePath = Path.Combine(directoryPath, $"{book.TitleFileSafe}.opf");
             Console.WriteLine(targetFilePath);
             Assert.IsTrue(File.Exists(targetFilePath));
         }

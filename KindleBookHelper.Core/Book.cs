@@ -1,6 +1,6 @@
 ﻿/*
     KindleBookHelper - Converts raw text file to html format that can be consumed by KindleGen.
-    Copyright (C) 2013 Peter Wetzel
+    Copyright (C) 2016 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -104,8 +104,8 @@ namespace KindleBookHelper.Core
 
         private void RenderTemplate(string sTargetDirectoryPath, string sTemplate)
         {
-            var targetFilePath = Path.Combine(sTargetDirectoryPath, string.Format("{0}.{1}", TitleFileSafe, sTemplate));
-            using (var reader = new StreamReader(_assembly.GetManifestResourceStream("KindleBookHelper.Core.templates." + sTemplate + ".template")))
+            var targetFilePath = Path.Combine(sTargetDirectoryPath, $"{TitleFileSafe}.{sTemplate}");
+            using (var reader = new StreamReader(_assembly.GetManifestResourceStream($"KindleBookHelper.Core.templates.{sTemplate}.template")))
             {
                 using (var writer = File.CreateText(targetFilePath))
                 {

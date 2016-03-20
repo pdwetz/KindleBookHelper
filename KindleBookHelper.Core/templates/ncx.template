@@ -9,24 +9,32 @@
 	</head>
 	<docTitle><text>{{Title}}</text></docTitle>
 	<docAuthor><text>{{AuthorAlphabetical}}</text></docAuthor>
-	<navMap>
-		<navPoint id="toc" playOrder="1">
-			<navLabel><text>"toc"</text></navLabel>
-			<content src="{{TitleFileSafe}}.html#toc"/>
-		</navPoint>
-		<navPoint id="start" playOrder="2">
-			<navLabel><text>"start"</text></navLabel>
-			<content src="{{TitleFileSafe}}.html"/>
-		</navPoint>
-		{{#poems}}
-		<navPoint id="{{TitleUrlSafe}}" playOrder="{{NavPlayOrder}}">
-			<navLabel><text>{{Title}}</text></navLabel>
-			<content src="{{TitleFileSafe}}.html#{{TitleUrlSafe}}"/>
-		</navPoint>
-		{{/poems}}
-		<navPoint id="EndOfBook" playOrder="{{EndNavPlayOrder}}">
-			<navLabel><text>Contact and Copyright</text></navLabel>
-			<content src="{{TitleFileSafe}}.html#EndOfBook"/>
-		</navpoint>
-	</navmap>
+  <navMap>
+    <navPoint id="toc" playOrder="1">
+      <navLabel>
+        <text>"toc"</text>
+      </navLabel>
+      <content src="{{TitleFileSafe}}.html#toc"/>
+    </navPoint>
+    <navPoint id="start" playOrder="2">
+      <navLabel>
+        <text>"start"</text>
+      </navLabel>
+      <content src="{{TitleFileSafe}}.html"/>
+    </navPoint>
+    {{#poems}}
+    <navPoint id="{{TitleUrlSafe}}" playOrder="{{NavPlayOrder}}">
+      <navLabel>
+        <text>{{Title}}</text>
+      </navLabel>
+      <content src="{{TitleFileSafe}}.html#{{TitleUrlSafe}}"/>
+    </navPoint>
+    {{/poems}}
+    <navPoint id="EndOfBook" playOrder="{{EndNavPlayOrder}}">
+      <navLabel>
+        <text>Contact and Copyright</text>
+      </navLabel>
+      <content src="{{TitleFileSafe}}.html#EndOfBook"/>
+    </navPoint>
+  </navMap>
 </ncx>
