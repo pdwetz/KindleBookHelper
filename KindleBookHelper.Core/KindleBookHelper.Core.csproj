@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KindleBookHelper.Core</RootNamespace>
     <AssemblyName>KindleBookHelper.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -31,13 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Nustache.Core, Version=1.15.3.7, Culture=neutral, PublicKeyToken=efd6f3d8f76ecd9f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nustache.1.15.3.7\lib\net20\Nustache.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Nustache.Core, Version=1.16.0.4, Culture=neutral, PublicKeyToken=efd6f3d8f76ecd9f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nustache.1.16.0.4\lib\net20\Nustache.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

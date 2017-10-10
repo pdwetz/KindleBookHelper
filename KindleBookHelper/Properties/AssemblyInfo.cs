@@ -2,16 +2,16 @@
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("KindleBookHelper")]
-[assembly: AssemblyDescription("Converts raw text file to html format that can be consumed by KindleGen.")]
+[assembly: AssemblyDescription("Converts raw text file to html format that can be consumed by KindleGen or Kindle Previewer.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("KindleBookHelper")]
-[assembly: AssemblyCopyright("Copyright ©  2016 Peter Wetzel")]
+[assembly: AssemblyCopyright("Copyright ©  2017 Peter Wetzel")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 [assembly: Guid("dc2d43bd-99a4-4644-bb22-b7288ac659c2")]
 
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyVersion("1.3.0.0")]
+[assembly: AssemblyFileVersion("1.3.0.0")]

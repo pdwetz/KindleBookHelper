@@ -1,6 +1,6 @@
 ﻿/*
     KindleBookHelper - Converts raw text file to html format that can be consumed by KindleGen.
-    Copyright (C) 2016 Peter Wetzel
+    Copyright (C) 2017 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ namespace KindleBookHelper
         static void Main(string[] args)
         {
             Console.WriteLine("KindleBookHelper");
-            Console.WriteLine("Copyright (C) 2016 Peter Wetzel");
+            Console.WriteLine("Copyright (C) 2017 Peter Wetzel");
             Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY; for details see license.txt.");
             string sFilePath = args == null || args.Length == 0 ? ConfigurationManager.AppSettings["KindleBookHelper.SourceFilePath"] : args[0];
             Console.WriteLine($"Processing '{sFilePath}'...");
