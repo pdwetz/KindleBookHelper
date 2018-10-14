@@ -1,6 +1,6 @@
 ﻿/*
     KindleBookHelper - Converts raw text file to html format that can be consumed by KindleGen.
-    Copyright (C) 2016 Peter Wetzel
+    Copyright (C) 2018 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,10 +27,10 @@ namespace KindleBookHelper.Core
         public string TitleUrlSafe { get { return Title.URLFriendly(); } }
         public List<Stanza> Stanzas { get; set; }
 
-        public Poem(string sRaw)
+        public Poem(string text)
         {
             Stanzas = new List<Stanza>();
-            List<string> lines = sRaw.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+            List<string> lines = text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
 
             // While could do this, still need to account for its location; so, just handling it in full loop
             //Title = lines.First(x => !string.IsNullOrWhiteSpace(x));

@@ -1,6 +1,6 @@
 ﻿/*
     KindleBookHelper - Converts raw text file to html format that can be consumed by KindleGen.
-    Copyright (C) 2016 Peter Wetzel
+    Copyright (C) 2018 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,12 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
-using System.IO;
-using System.Reflection;
 using KindleBookHelper.Core;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace KindleHelper.Test
 {
@@ -32,8 +32,8 @@ namespace KindleHelper.Test
         [SetUp]
         public void Setup()
         {
-            string sPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            _sourceFilePath = Path.Combine(sPath, "test.json");
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            _sourceFilePath = Path.Combine(path, "test.json");
             Console.WriteLine(_sourceFilePath);
         }
 
@@ -54,8 +54,8 @@ namespace KindleHelper.Test
                 AuthorAlphabetical = "Author, Test",
             });
             FileUtilities.WriteTextFile(_sourceFilePath, settings.ToString());
-
-            string sRaw = @"
+            string endPlaceholder = "--end--";
+            string sample = $@"
 A Title
 
 First Line
@@ -64,20 +64,20 @@ Second Line
 Another Stanze
 Last Line
 
-[END]
+{endPlaceholder}
 
 Another Title
 
 Another line
 Yet Another line
 
-[END]
+{endPlaceholder}
 ";
-            FileUtilities.WriteTextFile(rawFilePath, sRaw);
+            FileUtilities.WriteTextFile(rawFilePath, sample);
 
-            Book book = Book.Initialize(_sourceFilePath);
-            book.Process();
-            
+            var p = new BookProcessor(_sourceFilePath, endPlaceholder);
+            var book = p.Process();
+
             var targetFilePath = Path.Combine(directoryPath, $"{book.TitleFileSafe}.html");
             Console.WriteLine(targetFilePath);
             Assert.IsTrue(File.Exists(targetFilePath));

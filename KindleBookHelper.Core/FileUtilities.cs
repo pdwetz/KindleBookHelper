@@ -1,6 +1,6 @@
 /*
     KindleBookHelper - Converts raw text file to html format that can be consumed by KindleGen.
-    Copyright (C) 2016 Peter Wetzel
+    Copyright (C) 2018 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,49 +20,47 @@ using System.Reflection;
 
 namespace KindleBookHelper.Core
 {
-	public class FileUtilities
+	public static class FileUtilities
 	{
-		private FileUtilities() {}
-
-		public static string LoadTextFile(string sFilePath)
+		public static string LoadTextFile(string filePath)
 		{
-			string sReturn = "";
-            using (StreamReader sr = File.OpenText(sFilePath))
+			var data = "";
+            using (StreamReader sr = File.OpenText(filePath))
             {
-                sReturn = sr.ReadToEnd();
+                data = sr.ReadToEnd();
                 sr.DiscardBufferedData();
                 sr.Close();
             }
-            return sReturn;
+            return data;
 		}
 
-        public static string LoadTextResource(Assembly assembly, string sResourceName)
+        public static string LoadTextResource(Assembly assembly, string resourceName)
         {
-            string sReturn = "";
-            using (var sr = new StreamReader(assembly.GetManifestResourceStream(sResourceName)))
+            var data = "";
+            using (var sr = new StreamReader(assembly.GetManifestResourceStream(resourceName)))
             {
-                sReturn = sr.ReadToEnd();
+                data = sr.ReadToEnd();
                 sr.DiscardBufferedData();
                 sr.Close();
             }
-            return sReturn;
+            return data;
         }
 
-        public static void CreateDirectoryIfMissing(string sDirectoryPath)
+        public static void CreateDirectoryIfMissing(string directoryPath)
         {
-            if (!Directory.Exists(sDirectoryPath))
+            if (!Directory.Exists(directoryPath))
             {
-                Directory.CreateDirectory(sDirectoryPath);
+                Directory.CreateDirectory(directoryPath);
             }
         }
 
-		public static void WriteTextFile(string sFilePath, string sData)
+		public static void WriteTextFile(string filePath, string data)
 		{
-            string sDir = Path.GetDirectoryName(sFilePath);
-            CreateDirectoryIfMissing(sDir);
-            using (StreamWriter sw = File.CreateText(sFilePath))
+            var dirName = Path.GetDirectoryName(filePath);
+            CreateDirectoryIfMissing(dirName);
+            using (StreamWriter sw = File.CreateText(filePath))
             {
-                sw.Write(sData);
+                sw.Write(data);
                 sw.Flush();
                 sw.Close();
             }
