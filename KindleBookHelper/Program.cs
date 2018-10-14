@@ -1,6 +1,6 @@
 ﻿/*
     KindleBookHelper - Converts raw text file to html format that can be consumed by KindleGen.
-    Copyright (C) 2017 Peter Wetzel
+    Copyright (C) 2018 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,9 @@
 */
 using System;
 using System.Configuration;
+using CommandLine;
 using KindleBookHelper.Core;
+using Serilog;
 
 namespace KindleBookHelper
 {
@@ -25,15 +27,36 @@ namespace KindleBookHelper
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("KindleBookHelper");
-            Console.WriteLine("Copyright (C) 2017 Peter Wetzel");
-            Console.WriteLine("This program comes with ABSOLUTELY NO WARRANTY; for details see license.txt.");
-            string sFilePath = args == null || args.Length == 0 ? ConfigurationManager.AppSettings["KindleBookHelper.SourceFilePath"] : args[0];
-            Console.WriteLine($"Processing '{sFilePath}'...");
-            Book book = Book.Initialize(sFilePath);
-            book.Process();
-            Console.WriteLine("Done. Press any key to continue.");
-            Console.ReadLine();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Debug()
+                .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information)
+                .CreateLogger();
+
+            Parser.Default.ParseArguments<ProgramOptions>(args)
+                .WithParsed<ProgramOptions>(opts => RunOptionsAndReturnExitCode(opts));
+        }
+
+        private static void RunOptionsAndReturnExitCode(ProgramOptions options)
+        {
+            try
+            {
+                var p = new BookProcessor(options.FilePath, options.EndPlaceholder);
+                p.Process();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+                if (options.PauseAtCompletion)
+                {
+                    Console.WriteLine("Press any key to continue.");
+                    Console.ReadLine();
+                }
+            }
         }
     }
 }
