@@ -22,6 +22,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Nustache.Core;
 using Serilog;
+using WetzUtilities;
 
 namespace KindleBookHelper.Core
 {
@@ -73,11 +74,23 @@ namespace KindleBookHelper.Core
             var cssFilePath = Path.Combine(targetDirectoryPath, "poetry.css");
             if (!File.Exists(cssFilePath))
             {
-                var css = FileUtilities.LoadTextResource(_assembly, "KindleBookHelper.Core.templates.poetry.css");
-                FileUtilities.WriteTextFile(cssFilePath, css);
+                var css = LoadTextResource(_assembly, "KindleBookHelper.Core.templates.poetry.css");
+                FileUtilities.WriteTextFile(targetDirectoryPath, "poetry.css", css);
             }
             Log.Information("Finished processing book {Title}", book.Title);
             return book;
+        }
+
+        private string LoadTextResource(Assembly assembly, string resourceName)
+        {
+            var data = "";
+            using (var sr = new StreamReader(assembly.GetManifestResourceStream(resourceName)))
+            {
+                data = sr.ReadToEnd();
+                sr.DiscardBufferedData();
+                sr.Close();
+            }
+            return data;
         }
 
         private void RenderTemplate(string targetDirectoryPath, string template, Book book)

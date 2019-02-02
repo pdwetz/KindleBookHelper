@@ -1,6 +1,6 @@
 ﻿/*
     KindleBookHelper - Converts raw text file to html format that can be consumed by KindleGen.
-    Copyright (C) 2018 Peter Wetzel
+    Copyright (C) 2019 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,13 +18,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WetzUtilities;
 
 namespace KindleBookHelper.Core
 {
     public class Poem
     {
         public string Title { get; set; }
-        public string TitleUrlSafe { get { return Title.URLFriendly(); } }
+        public string TitleUrlSafe => Title.URLFriendly();
         public List<Stanza> Stanzas { get; set; }
 
         public Poem(string text)

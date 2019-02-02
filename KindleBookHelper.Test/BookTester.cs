@@ -21,6 +21,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Reflection;
+using WetzUtilities;
 
 namespace KindleHelper.Test
 {
@@ -53,7 +54,7 @@ namespace KindleHelper.Test
                 Author = "Test Author",
                 AuthorAlphabetical = "Author, Test",
             });
-            FileUtilities.WriteTextFile(_sourceFilePath, settings.ToString());
+            FileUtilities.WriteTextFile(directoryPath, Path.GetFileName(_sourceFilePath), settings.ToString());
             string endPlaceholder = "--end--";
             string sample = $@"
 A Title
@@ -73,7 +74,7 @@ Yet Another line
 
 {endPlaceholder}
 ";
-            FileUtilities.WriteTextFile(rawFilePath, sample);
+            FileUtilities.WriteTextFile(directoryPath, "raw.txt", sample);
 
             var p = new BookProcessor(_sourceFilePath, endPlaceholder);
             var book = p.Process();
