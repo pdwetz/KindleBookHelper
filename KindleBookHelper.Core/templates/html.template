@@ -51,7 +51,7 @@
 <div>
 	<h1>About the Author</h1>
 	<div class="descr">{{AuthorDescription}}</div>
-	<div class="descr">Author's web site: <a href="http://{{AuthorWebsite}}">{{AuthorWebsite}}</a></div>
+	<div class="descr">Author's web site: <a href="https://{{AuthorWebsite}}">{{AuthorWebsite}}</a></div>
 </div>
 </body>
 </html>
