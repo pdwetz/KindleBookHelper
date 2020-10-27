@@ -1,22 +1,22 @@
 # KindleBookHelper
 
 ## Overview
-Converts raw text file to MOBI html format that can be consumed by KindleGen/Previewer.
+Converts raw text file to MOBI html format that can be consumed by [Kindle Previewer](http://www.amazon.com/kindleformat/kindlepreviewer).
 It provides fairly basic formatting/functionality and only includes code for poetry at the moment.
 It will generate navigation, including a linkable table of contents to each poem.
 Some additional text can be included via the book metadata file.
-
-## Output
-All files utilize an "URL-friendly" version of the book title (lowercase with special characters and spaces encoded or removed)
-- book-title.opf. Xml document that serves as the book's manifest. This is the file fed into KindleGen or Previewer.
-- book-title.ncx. Xml document that lays out the book's navigation.
-- book-title.html. Html document that has all content.
-- poetry.css. Stylesheet used by book.
 
 ## Usage
 - -f JSON file with book metadata (required)
 - -e Text marking the end of each poem (optional; defaults to "[END]")
 - -p If provided, pauses the application after running (useful if running within an IDE)
+
+## Output
+All files utilize an url-friendly version of the book title (lowercase with special characters and spaces encoded or removed)
+- **book-title.opf** Xml document that serves as the book's manifest. This is the file fed into Kindle Previewer.
+- **book-title.ncx** Xml document that lays out the book's navigation.
+- **book-title.html** Html document that has all content.
+- **poetry.css** Stylesheet used by book.
 
 ## Notes
 - Program assumes that the first line is the name of the poem and that each stanza is separated by a line break
