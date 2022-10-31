@@ -47,13 +47,13 @@ namespace KindleBookHelper.Core
         {
             Log.Information("Processing book file {jsonFilePath}", _jsonFilePath);
             var book = JsonConvert.DeserializeObject<Book>(File.ReadAllText(_jsonFilePath));
-            if (book.Id == Guid.Empty)
+            if (book.Id.IsEmpty())
             {
                 book.Id = Guid.NewGuid();
                 Log.Information("Saving new unique Id");
                 File.WriteAllText(_jsonFilePath, JsonConvert.SerializeObject(book, Formatting.Indented));
             }
-            if (string.IsNullOrWhiteSpace(book.RawFilePath))
+            if (book.RawFilePath.IsEmpty())
             {
                 Log.Error("RawFilePath is required");
                 return null;
